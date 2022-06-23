@@ -66,3 +66,27 @@ gradle tasks
 # this task compiles, tests, and assembles the code into a JAR file
 gradle build
 ```
+
+## Running `gradle build`
+After running this command, a folder "build" will be created, which contains the compiled Java code `.class` and the `.jar` file.
+
+## Creating a fat JAR
+If the project uses external dependencies, these have to be included into the JAR file for them to be runnable on other systems.
+
+Include the task in `build.gradle`:
+```
+// creates a runnable JAR file that includes all external dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': "${mainClassName}"
+    }
+    archiveBaseName = "${rootProject.name}"
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+```
+
+Then, run the task using the following command:
+```bash
+./gradlew fatJar
+```

@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'application' // makes the JAR file runnable
 
 repositories { 
     mavenCentral() 
@@ -12,7 +13,18 @@ dependencies {
     testImplementation "junit:junit:4.12"
 }
 
-jar {
+mainClassName = 'hello.HelloWorld' // specifies the entry-point class when running the JAR file
+
+// creates a runnable JAR file that includes all external dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': "${mainClassName}"
+    }
+
     archiveBaseName = 'gs-gradle'
     archiveVersion =  '0.1.0'
+
+    from { configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    
+    with jar
 }
