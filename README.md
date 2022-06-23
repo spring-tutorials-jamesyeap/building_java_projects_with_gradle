@@ -51,6 +51,11 @@ To allow other systems to run a Gradle build without having Gradle installed, ad
 gradle wrapper --gradle-version 6.0.1
 ```
 
+Then, in other systems, the gradle build can be executed using:
+```bash
+./gradlew build
+```
+
 # Commands
 ```bash
 # lists all tasks available to run
